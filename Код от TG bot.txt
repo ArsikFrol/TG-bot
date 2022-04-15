@@ -1,0 +1,2548 @@
+import telebot
+from telebot import types
+from time import sleep
+from random import randint
+
+gl_variable = 0
+bot = telebot.TeleBot('5167551152:AAG6AxDi1-u6K__z1DLjQriOlr_W7ba89pA')
+
+@bot.message_handler(commands=['start', 'help'])
+def response_to_start_and_help(message):
+    '''ответ на команды /hepl and /start'''
+
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+    item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+    item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+    item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+    markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+    msg = bot.send_message(message.chat.id, f'Привет, {message.from_user.first_name}. Меня зовут Подготовка к ОГЭ. Я помогу тебе подготовится к решению ОГЭ за короткое время, я очень компактный и интересный.\n      ВАЖНО!!! Если вам бот будет долго отвечать (это примерно 5 сек), то скорей всего Вы допустили ошибку в написанни какого-либо слова. Прошу смотреть каждое написанное Вами слово, если Вы не знаете где была допушенна ошибка, то просто в чат напишите  /help.\nЧто вас интерисует?', reply_markup=markup)
+    bot.register_next_step_handler(msg, checking_the_main_question)
+
+def checking_the_main_question(message):
+    '''проверка гл вопроса'''
+
+    if message.text == 'Решить задачу':
+
+        global gl_variable
+        gl_variable += 1
+        print(gl_variable)
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=3)
+        item_1 = types.InlineKeyboardButton(text='Номер 1')
+        item_2 = types.InlineKeyboardButton(text='Номер 2')
+        item_3 = types.InlineKeyboardButton(text='Номер 3')
+        item_4 = types.InlineKeyboardButton(text='Номер 4')
+        item_5 = types.InlineKeyboardButton(text='Номер 5')
+        item_6 = types.InlineKeyboardButton(text='Номер 6')
+        item_7 = types.InlineKeyboardButton(text='Номер 7')
+        item_8 = types.InlineKeyboardButton(text='Номер 8')
+        item_9 = types.InlineKeyboardButton(text='Номер 9')
+        item_10 = types.InlineKeyboardButton(text='Номер 10')
+        markup.add(item_1, item_2, item_3, item_4, item_5, item_6, item_7, item_8, item_9, item_10)
+
+        msg = bot.send_message(message.chat.id, 'Выберете номер выполняемого задания', reply_markup=markup)
+        bot.register_next_step_handler(msg, checking_the_task_number)
+
+    if message.text == 'Решить ДЕМО тест':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_DEMO_test_here = types.InlineKeyboardButton(text='Решить ДЕМО тест здесь')
+        item_solve_the_DEMO_test_on_the_website = types.InlineKeyboardButton(text='Решить ДЕМО тест на сайте')
+        markup.add(item_solve_DEMO_test_here, item_solve_the_DEMO_test_on_the_website)
+
+        msg = bot.send_message(message.chat.id, 'Вы как хотите пройти демо тест?', reply_markup=markup)
+        bot.register_next_step_handler(msg, DEMO_test_check)
+
+def DEMO_test_check(message):
+    '''проверка гл вопроса после ответа Решить ДЕМО тест'''
+
+    if message.text == 'Решить ДЕМО тест здесь':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, row_width=1, resize_keyboard=True)
+        item_go_through_in_stages = types.InlineKeyboardButton(text='Решить тест поэтапно')
+        item_solve_the_test_all_at_once = types.InlineKeyboardButton(text='Решить тест сразу')
+        markup.add(item_solve_the_test_all_at_once, item_go_through_in_stages)
+
+        msg = bot.send_message(message.chat.id,'Как вы хотите пройти ДЕМО тест? Решить поэтапно тоесть я буду скидывать по одному заданию, а Вы мне будете скидывать ответ. Решить сразу это я Вам скидываю сразу весь тест, а вы мне сразу все ответы',reply_markup=markup)
+        bot.register_next_step_handler(msg, solve_DEMO_test_here)
+
+    if message.text == 'Решить ДЕМО тест на сайте':
+
+        bot.send_message(message.chat.id, 'Вот держи ссылку на сайт - https://inf-oge.sdamgia.ru/test?id=13819076')
+
+def solve_DEMO_test_here(message):
+    '''проверка ответа на Решить ДЕМО тест здесь'''
+
+    if message.text == 'Решить тест поэтапно':
+
+        per_testa = 0
+
+        bot.send_message(message.chat.id, 'Скидываю 1 задание')    #доделать
+
+    if message.text == 'Решить тест сразу':
+
+        bot.send_message(message.chat.id, 'Сейчас я скину все задания. Вы должы будете написать все ответы подряд. Ответы писать серез запятую с пробелом, без номера задачи просто пишать ответ затем запятая, пробел после ответ на другой вопрос')
+        # ответ на первый вопрос соликамск
+        bot.send_message(message.chat.id, 'задание 1.\nВ одной из кодировок Unicode каждый символ кодируется 16 битами. Ваня написал текст (в нём нет лишних пробелов):\n«Уфа, Азов, Пермь, Белово, Вологда, Камбарка, Соликамск — города России».\nУченик вычеркнул из списка название одного из городов. Заодно он вычеркнул ставшие лишними запятые и пробелы — два пробела не должны идти подряд. При этом размер нового предложения в данной кодировке оказался на 22 байта меньше, чем размер исходного предложения. Напишите в ответе вычеркнутое название города России.')
+        # ответ на второе задание МАМГЮКА
+        bot.send_message(message.chat.id, 'Задание 2.\nОт разведчика была получена следующая шифрованная радиограмма, переданная с использованием азбуки Морзе:')
+        with open('Поэтапно 2 задание точки.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'При передаче радиограммы было потеряно разбиение на буквы, но известно, что в радиограмме использовались только следующие буквы:')
+        with open('Поэтапно 2 задание картинка.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'Расшифруйте радиограмму. Запишите в ответе расшифрованную радиограмму.')
+        # ответ на третье задание 19
+        bot.send_message(message.chat.id, 'Задание 3\nНапишите наибольшее целое число x, для которого истинно высказывание:\nНЕ (X <= 15) И (X < 20).')
+        # овтет на четвертое задание 13
+        bot.send_message(message.chat.id, 'Задание 4\nМежду населёнными пунктами А, В, С, D, Е, F построены дороги, протяжённость которых (в километрах) приведена в таблице:')
+        with open('Поэтапно 4 задание.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'Определите длину кратчайшего пути между пунктами А и F. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.')
+        # ответ на пятое задание 3
+        bot.send_message(message.chat.id, 'Задание 5\nУ исполнителя Альфа две команды. которым присвоены номера:\n1. Вычти b;\n2. Умножь на 5.\nВыполняя первую из них, Альфа уменьшает число на экране на b, а выполняя вторую, умножает это число на 5. Программа для исполнителя Альфа — это последовательность номеров команд. Известно, что программа 21121 переводит число 2 в число 17. Определите значение b.')
+        # ответ на шестое задание 4
+        bot.send_message(message.chat.id, 'Задание 6\nНиже приведена программа, записанная на пяти языках программирования.')
+        with open('Поэтапно задание 6.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:\n(–2, 3); (2, 5); (0, 3); (5, –3); (5, 4); (11, 4); (8, –6); (1, 7); (9, 1).\nСколько было запусков, при которых программа напечатала «NO»?')
+        # ответ на седьмое задание БДВАГЖЕ
+        bot.send_message(message.chat.id, 'Задание 7\nДоступ к файлу name.gif, находящемуся на сервере jour.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.\nA) .com\nБ) ftp\nB) jour\nГ) /\nД) ://\nЕ) .gif\nЖ) name')
+        # ответ на восьмое задание 9600
+        bot.send_message(message.chat.id, 'Задание 8\nВ таблице приведены запросы и количество страниц, которые нашел поисковый сервер по этим запросам в некотором сегменте Интернета:')
+        with open('Поэтапно 8 задание.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'Сколько страниц (в тысячах) будет найдено по запросу выпечка?')
+        # ответ на 9 задание 16
+        bot.send_message(message.chat.id, 'Задание 9\nНа рисунке представлена схема дорог, связывающих города А, Б, В, Г, Д, Е, Ж, 3, И, К, Л, М. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой.Сколько существует различных путей из города А в город М, проходящих через город Ж, но не проходящих через город К?')
+        with open('Поэтапно 9 задание.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        # ответ на 10 задание 71
+        msg = bot.send_message(message.chat.id, 'Задание 10\nСреди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите максимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.\n41 - в шестнадцатеричной системе\n107 - в восьмеричной системе\n1000011 - в двоичной системе ')
+        bot.register_next_step_handler(msg, check_the_demo_here_for_all_tasks_at_once)
+
+def check_the_demo_here_for_all_tasks_at_once(message):
+    '''проверка ответа на демо тест весь разом'''
+
+    if message.text == 'соликамск, МАМГЮКА, 19, 13, 3, 4, БДВАГЖЕ, 9600, 16, 71':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard = True, resize_keyboard = True, row_width = 1)
+        item_po = types.InlineKeyboardButton(text = 'Пройти сначала')
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_po, item_solve_the_demo_test, item_solve_a_specific_task, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Круто!!! Молодец!!! Вы решили правильно!!!')
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard = True, resize_keyboard = True, row_width = 1)
+        item_po = types.InlineKeyboardButton(text = 'Пройти сначала')
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_po, item_solve_the_demo_test, item_solve_a_specific_task, item_start_training)
+        msg = bot.send_message(message.chat.id, 'Жалко. Вы решили не правильно', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+def answer_after_solve_first_in_the_demo_test(message):
+
+    if message.text == 'Пройти сначала':
+
+
+        bot.send_message(message.chat.id, 'Сейчас я скину все задания. Вы должы будете написать все ответы подряд. Ответы писать серез запятую с пробелом, без номера задачи просто пишать ответ затем запятая, пробел после ответ на другой вопрос')
+        # ответ на первый вопрос соликамск
+        bot.send_message(message.chat.id, 'задание 1.\nВ одной из кодировок Unicode каждый символ кодируется 16 битами. Ваня написал текст (в нём нет лишних пробелов):\n«Уфа, Азов, Пермь, Белово, Вологда, Камбарка, Соликамск — города России».\nУченик вычеркнул из списка название одного из городов. Заодно он вычеркнул ставшие лишними запятые и пробелы — два пробела не должны идти подряд. При этом размер нового предложения в данной кодировке оказался на 22 байта меньше, чем размер исходного предложения. Напишите в ответе вычеркнутое название города России.')
+        # ответ на второе задание МАМГЮКА
+        bot.send_message(message.chat.id, 'Задание 2.\nОт разведчика была получена следующая шифрованная радиограмма, переданная с использованием азбуки Морзе:')
+        with open('Поэтапно 2 задание точки.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'При передаче радиограммы было потеряно разбиение на буквы, но известно, что в радиограмме использовались только следующие буквы:')
+        with open('Поэтапно 2 задание картинка.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'Расшифруйте радиограмму. Запишите в ответе расшифрованную радиограмму.')
+        # ответ на третье задание 19
+        bot.send_message(message.chat.id, 'Задание 3\nНапишите наибольшее целое число x, для которого истинно высказывание:\nНЕ (X <= 15) И (X < 20).')
+        # овтет на четвертое задание 13
+        bot.send_message(message.chat.id, 'Задание 4\nМежду населёнными пунктами А, В, С, D, Е, F построены дороги, протяжённость которых (в километрах) приведена в таблице:')
+        with open('Поэтапно 4 задание.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'Определите длину кратчайшего пути между пунктами А и F. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.')
+        # ответ на пятое задание 3
+        bot.send_message(message.chat.id, 'Задание 5\nУ исполнителя Альфа две команды. которым присвоены номера:\n1. Вычти b;\n2. Умножь на 5.\nВыполняя первую из них, Альфа уменьшает число на экране на b, а выполняя вторую, умножает это число на 5. Программа для исполнителя Альфа — это последовательность номеров команд. Известно, что программа 21121 переводит число 2 в число 17. Определите значение b.')
+        # ответ на шестое задание 4
+        bot.send_message(message.chat.id, 'Задание 6\nНиже приведена программа, записанная на пяти языках программирования.')
+        with open('Поэтапно задание 6.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:\n(–2, 3); (2, 5); (0, 3); (5, –3); (5, 4); (11, 4); (8, –6); (1, 7); (9, 1).\nСколько было запусков, при которых программа напечатала «NO»?')
+        # ответ на седьмое задание БДВАГЖЕ
+        bot.send_message(message.chat.id, 'Задание 7\nДоступ к файлу name.gif, находящемуся на сервере jour.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.\nA) .com\nБ) ftp\nB) jour\nГ) /\nД) ://\nЕ) .gif\nЖ) name')
+        # ответ на восьмое задание 9600
+        bot.send_message(message.chat.id, 'Задание 8\nВ таблице приведены запросы и количество страниц, которые нашел поисковый сервер по этим запросам в некотором сегменте Интернета:')
+        with open('Поэтапно 8 задание.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        bot.send_message(message.chat.id, 'Сколько страниц (в тысячах) будет найдено по запросу выпечка?')
+        # ответ на 9 задание 16
+        bot.send_message(message.chat.id, 'Задание 9\nНа рисунке представлена схема дорог, связывающих города А, Б, В, Г, Д, Е, Ж, 3, И, К, Л, М. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой.Сколько существует различных путей из города А в город М, проходящих через город Ж, но не проходящих через город К?')
+        with open('Поэтапно 9 задание.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        # ответ на 10 задание 71
+        msg = bot.send_message(message.chat.id, 'Задание 10\nСреди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите максимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.\n41 - в шестнадцатеричной системе\n107 - в восьмеричной системе\n1000011 - в двоичной системе ')
+        bot.register_next_step_handler(msg, check_the_demo_here_for_all_tasks_at_once)
+
+def checking_the_task_number(message):
+    '''проверка введенного номера задания'''
+
+    global gl_variable
+
+    if gl_variable == 4:
+
+        gl_variable = 1
+        print(gl_variable)
+
+    else:
+
+        print(gl_variable)
+
+    if message.text == 'Номер 1':
+
+        if gl_variable == 1:
+
+            msg = bot.send_message(message.chat.id, 'Одно из слов ученик написал два раза подряд, поставив между одинаковыми словами один пробел. При этом размер написанного предложения в данной кодировке оказался на 8 байт больше, чем размер нужного предложения. Напишите в ответе лишнее слово.')
+            bot.register_next_step_handler(msg, checking_for_the_answer_from_the_first_question_1_task)
+
+        if gl_variable == 2:
+
+            msg = bot.send_message(message.chat.id, 'В одной из кодировок Unicode каждый символ кодируется 16 битами. Вова написал текст (в нём нет лишних пробелов):\n«Ёж, лев, слон, олень, тюлень, носорог, крокодил, аллигатор — дикие животные»\nУченик вычеркнул из списка название одного из животных. Заодно он вычеркнул ставшие лишними запятые и пробелы — два пробела не должны идти подряд. При этом размер нового предложения в данной кодировке оказался на 16 байт меньше, чем размер исходного предложения. Напишите в ответе вычеркнутое название животного.')
+            bot.register_next_step_handler(msg, checking_for_the_answer_from_the_first_question_2_task)
+
+        if gl_variable == 3:
+
+            msg = bot.send_message(message.chat.id, 'В одной из кодировок Unicode каждый символ кодируется 16 битами. Петя написал текст (в нём нет лишних пробелов):\n«Ель, кедр, сосна, кипарис, лиственница, можжевельник — хвойные растения».\nУченик вычеркнул из списка название одного из растений. Заодно он вычеркнул ставшие лишними запятые и пробелы — два пробела не должны идти подряд.При этом размер нового предложения в данной кодировке оказался на 26 байт меньше, чем размер исходного предложения.Напишите в ответе вычеркнутое название хвойного растения.')
+            bot.register_next_step_handler(msg, checking_for_the_answer_from_the_first_question_3_task)
+            gl_variable = 0
+
+    if message.text == 'Номер 2':
+
+        if gl_variable == 1:
+
+            with open('Задание 2 пер 1.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Валя шифрует русские слова (последовательности букв), записывая вместо каждой буквы её код: Некоторые цепочки можно расшифровать не одним способом. Например, 00010101 может означать не только СКА, но и СНК. Даны три кодовые цепочки: Даны три кодовые цепочки:\n10111101\n1010110\n10111000\nНайдите среди них ту, которая имеет только одну расшифровку, и запишите в ответе расшифрованное слово.')
+            bot.register_next_step_handler(msg, checking_the_answer_to_the_second_question_1_task)
+
+        if gl_variable == 2:
+
+            with open('Задание 2 пер 2.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Валя шифрует русские слова (последовательности букв), записывая вместо каждой буквы её код: Некоторые цепочки можно расшифровать не одним способом. Например, 00010101 может означать не только СКА, но и СНК. Даны три кодовые цепочки:\n100101000\v101111100\n100111101\nНайдите среди них ту, которая имеет только одну расшифровку, и запишите в ответе расшифрованное слово.')
+            bot.register_next_step_handler(msg, checking_the_answer_to_the_second_question_2_task)
+
+        if gl_variable == 3:
+
+            with open('Задание 2 пер 3.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Валя шифрует русские слова (последовательности букв), записывая вместо каждой буквы её код: Некоторые цепочки можно расшифровать не одним способом. Например, 00010101 может означать не только СКА, но и СНК. Даны три кодовые цепочки: 1010110\n100000101\n00011110001\nНайдите среди них ту, которая имеет только одну расшифровку, и запишите в ответе расшифрованное слово.')
+            bot.register_next_step_handler(msg, checking_the_answer_to_the_second_question_3_task)
+            gl_variable = 0
+
+    if message.text == 'Номер 3':
+
+        if gl_variable == 1:
+
+            msg = bot.send_message(message.chat.id,'Напишите наименьшее целое число x, для которого истинно высказывание\nНЕ (х < 2) И (х < 5)')
+            bot.register_next_step_handler(msg, checking_the_3_question_1_tesk)
+
+        if gl_variable == 2:
+
+            msg = bot.send_message(message.chat.id, 'Напишите наименьшее целое число x, для которого истинно высказывание:\nНЕ (X < 2) И (X чётное).')
+            bot.register_next_step_handler(msg, checking_the_3_question_2_tesk)
+
+        if gl_variable == 3:
+
+            msg = bot.send_message(message.chat.id, 'Напишите наименьшее целое число x, для которого истинно высказывание:\nНЕ (X < 7) И (X чётное).')
+            bot.register_next_step_handler(msg, checking_the_3_question_3_tesk)
+
+    if message.text == 'Номер 4':
+
+        if gl_variable == 1:
+
+            with open('Задание 4 пер 1.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице: Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.')
+            bot.register_next_step_handler(msg, checking_the_4_question_1_tesk)
+
+        if gl_variable == 2:
+
+            with open('Задание 4 пер 2.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице:Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.')
+            bot.register_next_step_handler(msg, checking_the_4_question_2_tesk)
+
+        if gl_variable == 3:
+
+            with open('Задание 4 пер 3.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице: Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.')
+            bot.register_next_step_handler(msg, checking_the_4_question_3_tesk)
+
+    if message.text == 'Номер 5':
+
+        if gl_variable == 1:
+
+            msg = bot.send_message(message.chat.id,'У исполнителя Альфа две команды, которым присвоены номера:\n1. прибавь 1;\n2. умножь на b\n(b — неизвестное натуральное число; b ≥ 2).\nВыполняя первую из них, Альфа увеличивает число на экране на 1, а выполняя вторую, умножает это число на b. Программа для исполнителя Альфа — это последовательность номеров команд. Известно, что программа 11211 переводит число 6 в число 82. Определите значение b.')
+            bot.register_next_step_handler(msg, checking_the_5_question_1_tesk)
+
+        if gl_variable == 2:
+
+            msg = bot.send_message(message.chat.id, 'У исполнителя Бета две команды, которым присвоены номера:\n1. прибавь 2;\n2. умножь на b\n(b — неизвестное натуральное число; b ≥ 2) Выполняя первую из них, Бета увеличивает число на экране на 2, а выполняя вторую, умножает это число на b. Программа для исполнителя Бета — это последовательность номеров команд. Известно, что программа 11121 переводит число 4 в число 72. Определите значение b.')
+            bot.register_next_step_handler(msg, checking_the_5_question_2_tesk)
+
+        if gl_variable == 3:
+
+            msg = bot.send_message(message.chat.id, 'У исполнителя Альфа две команды, которым присвоены номера:\n1. прибавь 1;\n2. умножь на b\n(b — неизвестное натуральное число; b ≥ 2) Выполняя первую из них, Альфа увеличивает число на экране на 1, а выполняя вторую, умножает это число на b. Программа для исполнителя Альфа — это последовательность номеров команд. Известно, что программа 11211 переводит число 3 в число 62. Определите значение b.')
+            bot.register_next_step_handler(msg, checking_the_5_question_3_tesk)
+
+    if message.text == 'Номер 6':
+
+        if gl_variable == 1:
+
+            with open('Задание 6 пер 1.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Ниже приведена программа, записанная на пяти языках программирования.Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:\n(1, 2); (11, 2); (1, 12); (11, 12); (–11, –12); (–11, 12); (–12, 11); (10, 10); (10, 5).\nСколько было запусков, при которых программа напечатала «YES»?')
+            bot.register_next_step_handler(msg, checking_the_6_question_1_tesk)
+
+        if gl_variable == 2:
+
+            with open('Задание 6 пер 2.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Ниже приведена программа, записанная на пяти языках программирования.Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:\n(1, 13); (14, 2); (1, 12); (11, 12); (–14, –14); (–11, 13); (–4, 11); (2, 9); (8, 6).\nСколько было запусков, при которых программа напечатала «YES»?')
+            bot.register_next_step_handler(msg, checking_the_6_question_2_tesk)
+
+        if gl_variable == 3:
+
+            with open('Задание 6 пер 3.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'Ниже приведена программа, записанная на пяти языках программирования.Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:\n(8, 8); (9, 6); (4, 7); (6, 6); (–9, –2); (–5, 9); (–10, 10); (6, 9); (10, 6).\nСколько было запусков, при которых программа напечатала «YES»?')
+            bot.register_next_step_handler(msg, checking_the_6_question_3_tesk)
+
+    if message.text == 'Номер 7':
+
+        if gl_variable == 1:
+
+            msg = bot.send_message(message.chat.id, 'Автоматическая фотокамера производит растровые изображения размером 640×480 пикселей. При этом объём файла с изображением не может превышать 320 Кбайт, упаковка данных не производится. Какое максимальное количество цветов можно использовать в палитре?')
+            bot.register_next_step_handler(msg, checking_the_7_question_1_tesk)
+
+        if gl_variable == 2:
+
+            msg = bot.send_message(message.chat.id, 'Доступ к файлу slon.txt, находящемуся на сервере circ.org, осуществляется по протоколу http. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.\nA) .txt\nБ) ://\nB) http\nГ) circ\nД) /\nЕ) .org\nЖ) slon')
+            bot.register_next_step_handler(msg, checking_the_7_question_2_tesk)
+
+        if gl_variable == 3:
+
+            msg = bot.send_message(message.chat.id, 'Доступ к файлу tiger.doc, находящемуся на сервере zoo.org, осуществляется по протоколу http. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.\nA) .doc\nБ) zoo\nB) /\nГ) ://\nД) tiger\nЕ) .org\nЖ) http')
+            bot.register_next_step_handler(msg, checking_the_7_question_3_tesk)
+
+    if message.text == 'Номер 8':
+
+        if gl_variable == 1:
+
+            with open('Задание 8 пер 1.jpg', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'В языке запросов поискового сервера для обозначения логической операции «ИЛИ» используется символ «|», а для обозначения логической операции «И» — символ «&». В таблице приведены запросы и количество найденных по ним страниц некоторого сегмента сети Интернет.Какое количество страниц (в тысячах) будет найдено по запросу Рыбка? Считается, что все запросы выполнялись практически одновременно, так что набор страниц, содержащих все искомые слова, не изменялся за время выполнения запросов.')
+            bot.register_next_step_handler(msg, checking_the_8_question_1_tesk)
+
+        if gl_variable == 2:
+
+            with open('Задача 8 пер 2.png', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'В языке запросов поискового сервера для обозначения логической операции «ИЛИ» используется символ «|», а для обозначения логической операции «И» — символ «&». В таблице приведены запросы и количество найденных по ним страниц некоторого сегмента сети Интернет.Какое количество страниц (в тысячах) будет найдено по запросу Прямая?Считается, что все запросы выполнялись практически одновременно, так что набор страниц, содержащих все искомые слова, не изменялся за время выполнения запросов.')
+            bot.register_next_step_handler(msg, checking_the_8_question_2_tesk)
+
+        if gl_variable == 3:
+
+            with open('Задача 8 пер 3.png', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'В языке запросов поискового сервера для обозначения логической операции «ИЛИ» используется символ «|», а для логической операции «И» – символ «&». В таблице приведены запросы и количество найденных по ним страниц некоторого сегмента сети Интернет.Какое количество страниц (в тысячах) будет найдено по запросу Корвет?Считается, что все запросы выполнялись практически одновременно, так что набор страниц, содержащих все искомые слова, не изменялся за время выполнения запросов.')
+            bot.register_next_step_handler(msg, checking_the_8_question_3_tesk)
+
+    if message.text == 'Номер 9':
+
+        if gl_variable == 1:
+
+            with open('Задание 9 пер 1.png', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'На рисунке — схема дорог, связывающих города А, Б, В, Г, Д, Е, Ж и К. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой. Сколько существует различных путей из города А в город К, проходящих через город В?')
+            bot.register_next_step_handler(msg, checking_the_9_question_1_tesk)
+
+        if gl_variable == 2:
+
+            with open('Задание 9 пер 2.png', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'На рисунке— схема дорог, связывающих города А, Б, В, Г, Д, Е, Ж, З и И. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой. Сколько существует различных путей из города А в город И, проходящих через город В?')
+            bot.register_next_step_handler(msg, checking_the_9_question_2_tesk)
+
+        if gl_variable == 3:
+
+            with open('Задание 9 пер 3.png', 'rb') as file:
+                bot.send_photo(message.chat.id, file)
+            msg = bot.send_message(message.chat.id, 'На рисунке — схема дорог, связывающих города А, Б, В, Г, Д, Е, Ж, З, И. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой. Сколько существует различных путей из города А в город И, проходящих через город Ж?')
+            bot.register_next_step_handler(msg, checking_the_9_question_3_tesk)
+
+    if message.text == 'Номер 10':
+
+        if gl_variable == 1:
+
+            msg = bot.send_message(message.chat.id, 'Среди проведенных ниже трех чисел, записанных в различных системахсчисления, найдите максимальное и запишите его в ответе в десятичной системе счисления. В ответ запишите только число, основание системы счисдения указывать не нужно.\n23 - в шестнадцатеричной системе\n32 - в восьмеричной системе\n11110 - в двоичной системе')
+            bot.register_next_step_handler(msg, checking_the_10_question_1_tesk)
+
+        if gl_variable == 2:
+
+            msg = bot.send_message(message.chat.id, 'Среди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите минимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.\n47 - в шестнадцатеричной системе\n120 - в восьмеричной системе\n1001011 - в двоичной системе.')
+            bot.register_next_step_handler(msg, checking_the_10_question_2_tesk)
+
+        if gl_variable == 3:
+
+            msg = bot.send_message(message.chat.id, 'Среди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите максимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.\n26 - в шестнадцатеричной системе\n26 - в восьмеричной системе\n11101 - в двоичной системе.')
+            bot.register_next_step_handler(msg, checking_the_10_question_3_tesk)
+
+def checking_the_10_question_3_tesk(message):
+    '''проверка ответа на 10 вопрос если пер равна 3'''
+
+    if message.text == '38':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Крутяк, с победой!!! Вы решили правильно 10 задание. Можете выбрать что будете делать дальше',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы написали неправильный ответ 😢. Советую посмотреть ролик, для того что бы понять как решать подобные задачи. Посмотришь?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_10_question_3_tesk)
+
+def do_something_after_wrong_answer_but_10_question_3_tesk(message):
+    '''проверка неправильного ответа на 10 вопрос если пер равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Переведём все числа в десятичную систему счисления:\n26 - в шеснадцатеричной системе = 38 - в десятичной системе\n26 - в восьмеричной системе = 22 - в десятичной системе\n11101 - в двоичной системе = 29 - в десятичной системе', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=VVso5SBaLdg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=10')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После ролика выбирай что будешь делать дальше?',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, ну тогда выбирай что будешь делать дальше',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id, 'Среди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите максимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.\n26 - в шестнадцатеричной системе\n26 - в восьмеричной системе\n11101 - в двоичной системе.')
+        bot.register_next_step_handler(msg, checking_the_10_question_3_tesk)
+
+
+def checking_the_10_question_2_tesk(message):
+    '''проверка ответа на 10 вопрос если пер равна 2'''
+
+    if message.text == '71':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 10 задание. Можете выбрать выбрать что будете выполнять ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы написали нерпавильный ответ 😢, не хотите посмотреть видео ролик для того что бы понять задачу? И в следующий раз решать задачи такого плана',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_10_question_2_tesk)
+
+def do_something_after_wrong_answer_but_10_question_2_tesk(message):
+    '''проверка неправильного ответа на 10 вопрос если пер равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Переведём все числа в десятичную систему счисления:\n47 - в шестнадцатеричной системе = 71 - в десятичной системе\n120 - в восьмеричной системе = 80 - в десятичной системе\n1001011 - в двоичной системе = 75 - в двоичной системе', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=VVso5SBaLdg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=10')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, тогда выбирай что будешь делать',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id, 'Среди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите минимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.\n47 - в шестнадцатеричной системе\n120 - в восьмеричной системе\n1001011 - в двоичной системе.')
+        bot.register_next_step_handler(msg, checking_the_10_question_2_tesk)
+
+
+def checking_the_10_question_1_tesk(message):
+    '''проверка ответа на 10 вопрос если пер равна 1'''
+
+    if message.text == '35':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Крутяк, поздравляю!!! Вы решили правильно 10 задание. Можете выбрать что будете выполнять дальше',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не хотите посмотреть видео ролик для того что бы понимать задачи такого типа?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_10_question_1_tesk)
+
+def do_something_after_wrong_answer_but_10_question_1_tesk(message):
+    '''проверка неправильного ответа на 10 вопрос если пер равна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Переведём все числа в десятичную систему счисления:\n23 - в шестнадцатеричной системе = 35 - в десятичной системе\n32 - в восьметичной системе = 26 - в десятичной системе\n11110 - в двоичной системе = 30 - в десятичной системе', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, держи ролик https://www.youtube.com/watch?v=VVso5SBaLdg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=10')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выбрать что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id,'Среди проведенных ниже трех чисел, записанных в различных системахсчисления, найдите максимальное и запишите его в ответе в десятичной системе счисления. В ответ запишите только число, основание системы счисдения указывать не нужно.\n23 - в шестнадцатеричной системе\n32 - в восьмеричной системе\n11110 - в двоичной системе')
+        bot.register_next_step_handler(msg, checking_the_10_question_1_tesk)
+
+
+def checking_the_9_question_1_tesk(message):
+    '''проверка ответа на 9 вопрос пер равна 1'''
+
+    if message.text == '10':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 9 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_9_question_1_tesk)
+
+def do_something_after_wrong_answer_but_9_question_1_tesk(message):
+    '''проверка неправильного ответа на 9 вопрос пер равна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Количество путей до города Х = количество путей добраться в любой из тех городов, из которых есть дорога в Х.\nПри этом если путь должен не проходить через какой-то город, нужно просто не учитывать этот город при подсчёте сумм. А если город, наоборот, обязательно должен лежать на пути, тогда для городов, в которые из нужного города идут дороги, в суммах нужно брать только этот город.\nС помощью этого наблюдения посчитаем последовательно количество путей до каждого из городов:\nА = 1\nБ = А = 1\nВ = А + Б = 2\nГ = В = 2 (А не учитываем, поскольку путь должен проходить через город В)\nД = В = 2 (Б не учитываем, поскольку путь должен проходить через город В)\nЕ = В + Д = 4\nЖ = В + Г = 4Ж = В + Г = 4\nК = Д + Е + Ж = 2 + 4 + 4 = 10.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=VVso5SBaLdg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=10&t=1s')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        with open('Задание 9 пер 1.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'На рисунке — схема дорог, связывающих города А, Б, В, Г, Д, Е, Ж и К. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой. Сколько существует различных путей из города А в город К, проходящих через город В?')
+        bot.register_next_step_handler(msg, checking_the_9_question_1_tesk)
+
+
+def checking_the_9_question_2_tesk(message):
+    '''проверка ответа на 9 вопрос пер равна 2'''
+
+    if message.text == '12':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 9 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_9_question_2_tesk)
+
+def do_something_after_wrong_answer_but_9_question_2_tesk(message):
+    '''проверка неправильного ответа на 9 вопрос пер равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Количество путей до города Х = количество путей добраться в любой из тех городов, из которых есть дорога в Х.При этом если путь должен не проходить через какой-то город, нужно просто не учитывать этот город при подсчёте сумм. А если город наоборот обязательно должен лежать на пути, тогда для городов, в которые из нужного города идут дороги, в суммах нужно брать только этот город.\nС помощью этого наблюдения посчитаем последовательно количество путей до каждого из городов:\nА = 1\nБ = А = 1\nД = А = 1\nГ = А + Д = 1 + 1 = 2\nВ = А + Б + Г = 4\nЕ = В = 4 (Б не учитываем, поскольку путь должен проходить через В)\nЖ = В + Е = 4 + 4 = 8 (Г, Д, З не учитываем, поскольку путь должен проходить через В)\nЗ = 0 (поскольку в З не ведёт ни одна дорога из В)\nИ = Е + Ж = 4 + 8 = 12.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=VVso5SBaLdg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=10&t=1s')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        with open('Задание 9 пер 2.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'На рисунке— схема дорог, связывающих города А, Б, В, Г, Д, Е, Ж, З и И. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой. Сколько существует различных путей из города А в город И, проходящих через город В?')
+        bot.register_next_step_handler(msg, checking_the_9_question_2_tesk)
+
+def checking_the_9_question_3_tesk(message):
+    '''проверка ответа на 9 вопрос пер равна 3'''
+
+    if message.text == '13':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 9 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_9_question_3_tesk)
+
+def do_something_after_wrong_answer_but_9_question_3_tesk(message):
+    '''проверка неправильного ответа на 9 вопрос пер равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Количество путей до города К равно количеству путей добраться в любой из тех городов, из которых есть дорога в K.\nПри этом если путь должен не проходить через какой-то город, нужно просто не учитывать этот город при подсчёте сумм. А если город наоборот обязательно должен лежать на пути, тогда для городов, в которые из нужного города идут дороги, в суммах нужно брать только этот город.\nС помощью этого наблюдения найдём последовательно количество путей до каждого из городов:\nА = 1\nБ = А = 1\nД = А = 1\nГ = А + Д = 1 + 1 = 2\nВ = А + Б + Г = 4\nЕ = Б + В = 5\nЗ = Д = 1\nЖ = Е + В + Г + Д + З = 5 + 4 + 2 + 1 + 1 = 13\nИ = Ж = 13 (Е и З не учитываем, поскольку нужно обязательно проходить через Ж).', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=VVso5SBaLdg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=10&t=1s')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        with open('Задание 9 пер 3.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'На рисунке — схема дорог, связывающих города А, Б, В, Г, Д, Е, Ж, З, И. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой. Сколько существует различных путей из города А в город И, проходящих через город Ж?')
+        bot.register_next_step_handler(msg, checking_the_9_question_3_tesk)
+
+
+def checking_the_8_question_3_tesk(message):
+    '''проверка ответа на 8 вопрос если пер равна 3'''
+
+    if message.text == '2520':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 8 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_8_question_3_tesk)
+
+def do_something_after_wrong_answer_but_8_question_3_tesk(message):
+    '''проверка неправильного ответа на 8 вопрос если пер равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'По формуле включений и исключений имеем:\nm(Линкор | Корвет) = m(Линкор) + m(Корвет) − m(Линкор & Корвет),\nm(Корвет) = m(Линкор | Корвет) − m(Линкор) + m(Линкор & Корвет) = 3320 — 2100 + 1300 = 2520.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=kB2bOYtTYHo&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=8')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+        with open('Задача 8 пер 3.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'В языке запросов поискового сервера для обозначения логической операции «ИЛИ» используется символ «|», а для логической операции «И» – символ «&». В таблице приведены запросы и количество найденных по ним страниц некоторого сегмента сети Интернет.Какое количество страниц (в тысячах) будет найдено по запросу Корвет?Считается, что все запросы выполнялись практически одновременно, так что набор страниц, содержащих все искомые слова, не изменялся за время выполнения запросов.')
+        bot.register_next_step_handler(msg, checking_the_8_question_3_tesk)
+
+def checking_the_8_question_2_tesk(message):
+    '''проверка ответа на 8 вопрос если пер равна 2'''
+
+    if message.text == '140':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 8 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_8_question_2_tesk)
+
+def do_something_after_wrong_answer_but_8_question_2_tesk(message):
+    '''проверка неправильного ответа на 8 вопрос если пер равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Представим таблицу в виде кругов Эйлера. Пусть Угол — круг 1, Прямая — круг 3. Тогда задача — найти количество элементов N в областях 2 и 3: N2 + N3. По таблице известно:\nN1 + N2 + N3 = 180 (1),\nN1 + N2 = 60 (2),\nN2 = 20.\nПодставим второе уравнение в первое и найдём N3: N3 = 180 − 60 = 120. Таким образом, по запросу Прямая будет найдено N2 + N3 = 20 + 120 = 140 тысяч страниц.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=kB2bOYtTYHo&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=8')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        with open('Задача 8 пер 2.png', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'В языке запросов поискового сервера для обозначения логической операции «ИЛИ» используется символ «|», а для обозначения логической операции «И» — символ «&». В таблице приведены запросы и количество найденных по ним страниц некоторого сегмента сети Интернет.Какое количество страниц (в тысячах) будет найдено по запросу Прямая?Считается, что все запросы выполнялись практически одновременно, так что набор страниц, содержащих все искомые слова, не изменялся за время выполнения запросов.')
+        bot.register_next_step_handler(msg, checking_the_8_question_2_tesk)
+
+def checking_the_8_question_1_tesk(message):
+    '''проверка ответа на 8 вопрос если пер равна 1'''
+
+    if message.text == '570':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 8 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_8_question_1_tesk)
+
+def do_something_after_wrong_answer_but_8_question_1_tesk(message):
+    '''проверка неправильного ответа на 8 вопрос если пер равна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Представим таблицу в виде кругов Эйлера. Пусть Рыбак — круг 1, Рыбка — круг 3. Тогда задача — найти количество элементов N в областях 2 и 3: N2 + N3. По таблице известно:\nN1 + N2 + N3 = 780(1),\nN1 + N2 = 260 (2),\nN2 = 50.\nПодставим второе уравнение в первое и найдём N3 : N3 = 780 − 260 = 520. Таким образом, по запросу Рыбка будет найдено N2 + N3 = 50 + 520 = 570 тысяч страниц.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=kB2bOYtTYHo&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=8')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        with open('Задание 8 пер 1.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'В языке запросов поискового сервера для обозначения логической операции «ИЛИ» используется символ «|», а для обозначения логической операции «И» — символ «&». В таблице приведены запросы и количество найденных по ним страниц некоторого сегмента сети Интернет.Какое количество страниц (в тысячах) будет найдено по запросу Рыбка? Считается, что все запросы выполнялись практически одновременно, так что набор страниц, содержащих все искомые слова, не изменялся за время выполнения запросов.')
+        bot.register_next_step_handler(msg, checking_the_8_question_1_tesk)
+
+
+def checking_the_7_question_1_tesk(message):
+    '''проверка ответа на 7 вопрос если пер равна 1'''
+
+    if message.text == '256':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 7 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_7_question_1_tesk)
+
+def do_something_after_wrong_answer_but_7_question_1_tesk(message):
+    '''проверка неправильного ответа на 7 вопрос если пер равна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Объём растрового изображения находится как произведение количества пикселов в изображении на объём памяти x, необходимый для хранения цвета одного пиксела: 640 · 480 · x ≤ 320 · 2 ( в 10 степени) · 2(в 3 степени) бит, откуда x ≤ 2(в 5 степени) · 2(в 10 степени) · 2(в 3 степени)/(2(в 11 степени) · 15), откуда находим x = 8 бит. Значит, в изображении можно использовать не более 28 = 256 цветов.')
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=9saQWfkUiZg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=7')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id,'Автоматическая фотокамера производит растровые изображения размером 640×480 пикселей. При этом объём файла с изображением не может превышать 320 Кбайт, упаковка данных не производится. Какое максимальное количество цветов можно использовать в палитре?')
+        bot.register_next_step_handler(msg, checking_the_7_question_1_tesk)
+
+def checking_the_7_question_2_tesk(message):
+    '''проверка ответа на 7 вопрос если пер равна 2'''
+
+    if message.text == 'ВБГЕДЖА':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 7 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_7_question_2_tesk)
+
+def do_something_after_wrong_answer_but_7_question_2_tesk(message):
+    '''проверка неправильного ответа на 7 вопрос если пер равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило это «ftp» или «http»), потом «://», потом сервер, затем «/», название файла указывается в конце. Таким образом, адрес будет следующим: http://circ.org/slon.txt. Следовательно, ответ ВБГЕДЖА.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=9saQWfkUiZg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=7')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id, 'Доступ к файлу slon.txt, находящемуся на сервере circ.org, осуществляется по протоколу http. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.\nA) .txt\nБ) ://\nB) http\nГ) circ\nД) /\nЕ) .org\nЖ) slon')
+        bot.register_next_step_handler(msg, checking_the_7_question_2_tesk)
+
+
+def checking_the_7_question_3_tesk(message):
+    '''проверка ответа на 7 вопрос если пер равна 3'''
+
+    if message.text == 'ЖГБЕВДА':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 7 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_7_question_3_tesk)
+
+
+def do_something_after_wrong_answer_but_7_question_3_tesk(message):
+    '''проверка неправильного ответа на 7 вопрос если пер равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Напомним, как формируется адрес в сети Интернет. Сначала указывается протокол (как правило это «ftp» или «http»), потом «://», потом сервер, затем «/», название файла указывается в конце. Таким образом, адрес будет следующим: http://zoo.org/tiger.doc. Следовательно, ответ ЖГБЕВДА .', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=9saQWfkUiZg&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=7')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id, 'Доступ к файлу tiger.doc, находящемуся на сервере zoo.org, осуществляется по протоколу http. Фрагменты адреса файла закодированы буквами от А до Ж. Запишите последовательность этих букв, кодирующую адрес указанного файла в сети Интернет.\nA) .doc\nБ) zoo\nB) /\nГ) ://\nД) tiger\nЕ) .org\nЖ) http')
+        bot.register_next_step_handler(msg, checking_the_7_question_3_tesk)
+
+
+def checking_the_6_question_1_tesk(message):
+    '''проверка ответа на 6 вопрос пер равна 1'''
+
+    if message.text == '5':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 6 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_6_question_1_tesk)
+
+def do_something_after_wrong_answer_but_6_question_1_tesk(message):
+    '''проверка неправильного ответа на 6 вопрос пер равна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Заметим, что программа напечатает «YES», если одна из введённых переменных s или t будет больше 10. Значит, было 5 запусков, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел:\n(11, 2); (1, 12); (11, 12); (–11, 12); (–12, 11).', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=G27AhEkWW7U&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=6')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        with open('Задание 6 пер 1.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Ниже приведена программа, записанная на пяти языках программирования.Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:\n(1, 2); (11, 2); (1, 12); (11, 12); (–11, –12); (–11, 12); (–12, 11); (10, 10); (10, 5).\nСколько было запусков, при которых программа напечатала «YES»?')
+        bot.register_next_step_handler(msg, checking_the_6_question_1_tesk)
+
+def checking_the_6_question_2_tesk(message):
+    '''проверка ответа на 6 вопрос пер равна 2'''
+
+    if message.text == '3':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 6 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_6_question_2_tesk)
+
+def do_something_after_wrong_answer_but_6_question_2_tesk(message):
+    '''проверка неправильного ответа на 6 вопрос пер равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Заметим, что программа напечатает «YES», если одна из введённых переменных s или t будет больше 12. Значит, было 3 запуска, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел:\n(1, 13); (14, 2); (–11, 13).', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=G27AhEkWW7U&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=6')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        with open('Задание 6 пер 2.jpg') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Ниже приведена программа, записанная на пяти языках программирования.Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:\n(1, 13); (14, 2); (1, 12); (11, 12); (–14, –14); (–11, 13); (–4, 11); (2, 9); (8, 6).\nСколько было запусков, при которых программа напечатала «YES»?')
+        bot.register_next_step_handler(msg, checking_the_6_question_2_tesk)
+
+def checking_the_6_question_3_tesk(message):
+    '''проверка ответа на 6 вопрос пер равна 3'''
+
+    if message.text == '5':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 6 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_6_question_3_tesk)
+
+def do_something_after_wrong_answer_but_6_question_3_tesk(message):
+    '''проверка неправильного ответа на 6 вопрос пер равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Заметим, что программа напечатает «YES», если одна из введённых переменных s или t будет больше 8. Значит, было 5 запусков, при которых программа напечатала «YES». В качестве значений переменных s и t в этих случаях вводились следующие пары чисел:\n(9, 6); (–5, 9); (–10, 10); (6, 9); (10, 6).', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик https://www.youtube.com/watch?v=G27AhEkWW7U&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=6')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        with open('Задание 6 пер 3.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Ниже приведена программа, записанная на пяти языках программирования.Было проведено 9 запусков программы, при которых в качестве значений переменных s и t вводились следующие пары чисел:\n(8, 8); (9, 6); (4, 7); (6, 6); (–9, –2); (–5, 9); (–10, 10); (6, 9); (10, 6).\nСколько было запусков, при которых программа напечатала «YES»?')
+        bot.register_next_step_handler(msg, checking_the_6_question_3_tesk)
+
+def checking_the_5_question_1_tesk(message):
+    '''проверка ответа на 5 вопрос если пер равна 1'''
+
+    if message.text == '10':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 5 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_5_question_1_tesk)
+
+def do_something_after_wrong_answer_but_5_question_1_tesk(message):
+    '''проверка неправильного ответа на 5 вопрос если пер равна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Заметим, что после выполнения первых двух команд мы получаем число 8. Далее, составим и решим уравнение:\n8b плюс 2 = 82 равносильно 8b = 80 равносильно b = 10.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик РОЛИК\n https://www.youtube.com/watch?v=TwUQArGb-wM&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=5')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id,'У исполнителя Альфа две команды, которым присвоены номера:\n1. прибавь 1;\n2. умножь на b\n(b — неизвестное натуральное число; b ≥ 2).\nВыполняя первую из них, Альфа увеличивает число на экране на 1, а выполняя вторую, умножает это число на b. Программа для исполнителя Альфа — это последовательность номеров команд. Известно, что программа 11211 переводит число 6 в число 82. Определите значение b.')
+        bot.register_next_step_handler(msg, checking_the_5_question_1_tesk)
+
+def checking_the_5_question_2_tesk(message):
+    '''проверка ответа на 5 вопрос если пер равна 2'''
+
+    if message.text == '7':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 5 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_5_question_2_tesk)
+
+def do_something_after_wrong_answer_but_5_question_2_tesk(message):
+    '''проверка неправильного ответа на 5 вопрос если пер равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Заметим, что после выполнения первых трёх команд мы получаем число 10. Далее, составим и решим уравнение:\n10b плюс 2 = 72 равносильно 10b = 70 равносильно b = 7.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик РОЛИК\n https://www.youtube.com/watch?v=TwUQArGb-wM&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=5')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id,'У исполнителя Альфа две команды, которым присвоены номера:\n1. прибавь 1;\n2. умножь на b\n(b — неизвестное натуральное число; b ≥ 2).\nВыполняя первую из них, Альфа увеличивает число на экране на 1, а выполняя вторую, умножает это число на b. Программа для исполнителя Альфа — это последовательность номеров команд. Известно, что программа 11211 переводит число 6 в число 82. Определите значение b.')
+        bot.register_next_step_handler(msg, checking_the_5_question_2_tesk)
+
+def checking_the_5_question_3_tesk(message):
+    '''проверка ответа на 5 вопрос если пер равна 3'''
+
+    if message.text == '12':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Круто, поздравляю!!! Вы решили правильно 5 задание. Можете выбрать выполняемое задание из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_5_question_3_tesk)
+
+def do_something_after_wrong_answer_but_5_question_3_tesk(message):
+    '''проверка неправильного ответа на 5 вопрос если пер равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Заметим, что после выполнения первых двух команд мы получаем число 5. Далее, составим и решим уравнение:\n5b плюс 2=62 равносильно 5b = 60 равносильно b = 12.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик РОЛИК\n https://www.youtube.com/watch?v=TwUQArGb-wM&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=5')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id,'У исполнителя Альфа две команды, которым присвоены номера:\n1. прибавь 1;\n2. умножь на b\n(b — неизвестное натуральное число; b ≥ 2).\nВыполняя первую из них, Альфа увеличивает число на экране на 1, а выполняя вторую, умножает это число на b. Программа для исполнителя Альфа — это последовательность номеров команд. Известно, что программа 11211 переводит число 6 в число 82. Определите значение b.')
+        bot.register_next_step_handler(msg, checking_the_5_question_3_tesk)
+
+def checking_the_4_question_1_tesk(message):
+    '''проверка 4 вопроса если пер равна 1'''
+
+    if message.text == '6':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Круто, молодец!!!\nМожешь выбрать задание ниже', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неравильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_4_question_1_tesk)
+
+def do_something_after_wrong_answer_but_4_question_1_tesk(message):
+    '''что делаем дальше после 4 вопроса на которое не правильно ответили если пер равна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg= bot.send_message(message.chat.id, 'Найдём все варианты маршрутов из A в E и выберем самый короткий.\nИз пункта A можно попасть в пункт B.\nИз пункта B можно попасть в пункты C, D, E.\nИз пункта C можно попасть в пункт E.\nИз пункта D можно попасть в пункт E.\nA—B: длина маршрута 1 км.\nA—B—C—E: длина маршрута 6 км.\nA—B—D—E: длина маршрута 7 км.\nA—B—E: длина маршрута 8 км.\nСамый короткий путь: A—B—C—E. Длина маршрута 6 км.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, лови ролик https://www.youtube.com/watch?v=P5nmru96S3k&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=4')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'Ответ нужно написать сразу после задания')
+        with open('Задание 4 пер 1.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице: Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.')
+        bot.register_next_step_handler(msg, checking_the_4_question_1_tesk)
+
+def checking_the_4_question_2_tesk(message):
+    '''проверка 4 вопроса елси пер равна 2'''
+
+    if message.text == '9':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Круто, молодец!!!\nМожешь выбрать задание ниже', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_4_question_2_tesk)
+
+def do_something_after_wrong_answer_but_4_question_2_tesk(message):
+    '''что делаем дальше после 4 вопроса на которое не правильно ответили если пер равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Найдём все варианты маршрутов из A в E и выберем самый короткий.\nИз пункта A можно попасть в пункты B, С.\nИз пункта B можно попасть в пункты C, D.\nИз пункта C можно попасть в пункты B, D.\nИз пункта D можно попасть в пункт E.\nA—B—C—D—E: длина маршрута 13 км.\nA—B—D—E: длина маршрута 10 км.\nA—C—D—E: длина маршрута 10 км.\nA—C—B—D—E: длина маршрута 9 км\nСамый короткий путь: A—C—B—D—E. Длина маршрута 9 км.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, лови ролик https://www.youtube.com/watch?v=P5nmru96S3k&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=4')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'Ответ нужно написать сразу после задания')
+        with open('Задание 4 пер 2.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице:Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.')
+        bot.register_next_step_handler(msg, checking_the_4_question_2_tesk)
+
+def checking_the_4_question_3_tesk(message):
+    '''проверка 4 вопроса елси пер равна 3'''
+
+    if message.text == '9':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Круто, молодец!!!\nМожешь выбрать задание ниже', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id,'Вы решили задачу неправильно 😢, не зотите посмотреть видео ролик для того что бы понять задачу?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_4_question_3_tesk)
+
+def do_something_after_wrong_answer_but_4_question_3_tesk(message):
+    '''что делаем дальше после 4 вопроса на которое не правильно ответили если пер равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Найдём все варианты маршрутов из A в E и выберем самый короткий.\nИз пункта A можно попасть в пункты B, С.\nИз пункта B можно попасть в пункты C, D.\nИз пункта C можно попасть в пункт D.\nИз пункта D можно попасть в пункт E.\nA—B—C—D—E: длина маршрута 9 км.\nA—B—D—E: длина маршрута 10 км.\nA—C—D—E: длина маршрута 11 км.\nСамый короткий путь: A—B—C—D—E. Длина маршрута 9 км.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, лови ролик https://www.youtube.com/watch?v=P5nmru96S3k&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=4')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'Ответ нужно написать сразу после задания')
+        with open('Задание 4 пер 3.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Между населёнными пунктами А, В, С, D, Е построены дороги, протяжённость которых (в километрах) приведена в таблице: Определите длину кратчайшего пути между пунктами А и E. Передвигаться можно только по дорогам, протяжённость которых указана в таблице.')
+        bot.register_next_step_handler(msg, checking_the_4_question_3_tesk)
+
+
+def checking_the_3_question_1_tesk(message):
+    '''провека 3 вопроса если перемнная равна 1'''
+
+    if message.text == '2':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Молодец!!! Вы решили правильно!!!\nМожете выбрать выполняемое задание ниже', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        item_not_waht = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        markup.add(item_want, item_not_waht, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id, 'Вы решили неправильно 😢 Не хотите посмотреть ролик?', reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_3_question_1_tesk)
+
+def do_something_after_wrong_answer_but_3_question_1_tesk(message):
+    '''что делаем дальше после не правильного ответа на 3 вопрос если переменная ревна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Запишем выражение в виде\n(X >= 2) И (X < 5).\nЗначит, наименьшее число, для которого высказывание будет истинным — 2.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик РОЛИК\n https://www.youtube.com/watch?v=_ZiCd8qVdjo&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=3')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Плохо, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id,'Напишите наименьшее целое число x, для которого истинно высказывание\nНЕ (х < 2) И (х < 5)')
+        bot.register_next_step_handler(msg, checking_the_3_question_1_tesk)
+
+def checking_the_3_question_2_tesk(message):
+    '''провека 3 вопроса если переменная равна 2'''
+
+    if message.text == '2':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Молодец!!! Вы решили правильно!!!\nМожете выбрать выполняемое задание ниже', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_not_waht = types.InlineKeyboardButton(text='Не хочу')
+        markup.add(item_want, item_not_waht, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id, 'Вы решили неправильно 😢 Не хотите посмотреть ролик?', reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_3_question_2_tesk)
+
+def do_something_after_wrong_answer_but_3_question_2_tesk(message):
+    '''что делаем дальше после не правильного ответа на 3 вопрос если переменная равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Запишем выражение в виде\n(X >= 2) И (X чётное).\nЗначит, наименьшее число, для которого высказывание будет истинным — 2.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик РОЛИК\n https://www.youtube.com/watch?v=_ZiCd8qVdjo&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=3')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Плохо, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id, 'Напишите наименьшее целое число x, для которого истинно высказывание:\nНЕ (X < 2) И (X чётное).')
+        bot.register_next_step_handler(msg, checking_the_3_question_2_tesk)
+
+def checking_the_3_question_3_tesk(message):
+    '''провека 3 вопроса если перемнная равна 3'''
+
+    if message.text == '8':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Молодец!!! Вы решили правильно!!!\nМожете выбрать выполняемое задание ниже', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        item_not_waht = types.InlineKeyboardButton(text='Не хочу')
+        markup.add(item_want, item_not_waht, item_solve_the_problem, item_view_the_solution)
+
+        msg = bot.send_message(message.chat.id, 'Вы решили неправильно 😢 Не хотите посмотреть ролик?', reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_3_question_3_tesk)
+
+def do_something_after_wrong_answer_but_3_question_3_tesk(message):
+    '''что делаем дальше после не правильного ответа на 3 вопрос если переменная ревна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Запишем выражение в виде\n(X >= 7) И (X чётное).\nЗначит, наименьшее число, для которого высказывание будет истинным — 8.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id,'Круто, лови ролик РОЛИК\n https://www.youtube.com/watch?v=_ZiCd8qVdjo&list=PLs2IpQwiXpT2Q05H1uOz2lRW0q1-Pf37E&index=3')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Плохо, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        msg = bot.send_message(message.chat.id, 'Напишите наименьшее целое число x, для которого истинно высказывание:\nНЕ (X < 7) И (X чётное).')
+        bot.register_next_step_handler(msg, checking_the_3_question_3_tesk)
+
+
+def checking_the_answer_to_the_second_question_1_task(message):
+    '''проверка ответа на 2 вопрос если переменная равна 1'''
+
+    if message.text == 'ОДА':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Молодец!!! Вы решили правильно!!!\nМожете выполнить задание ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        bot.send_message(message.chat.id, 'Очень жалко 😢 Вы ответили неправильно 😭')
+        msg = bot.send_message(message.chat.id, 'Вы не смогли решить задачу не хотите посмотреть выдеоролик?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_2_question_1_task)
+
+def do_something_after_wrong_answer_but_2_question_1_task(message):
+    '''что делаем после не правильного ответа на 2 вопрос если переменная равна 1'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Проанализируем каждый вариант ответа:\n1) «1010110» может означать как «НКН» так и «КАН».\n2) «11110001» может означать только «ОДА».\n3) «100000101» может означать как «ДСК» так и «НСАА»', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, лови ролик https://tinyurl.com/yd2s8mw5')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Плохо, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'Желаю удачи')
+        with open('Задание 2 пер 1.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Валя шифрует русские слова (последовательности букв), записывая вместо каждой буквы её код: Некоторые цепочки можно расшифровать не одним способом. Например, 00010101 может означать не только СКА, но и СНК. Даны три кодовые цепочки: Даны три кодовые цепочки:\n10111101\n1010110\n10111000\nНайдите среди них ту, которая имеет только одну расшифровку, и запишите в ответе расшифрованное слово.')
+        bot.register_next_step_handler(msg, checking_the_answer_to_the_second_question_1_task)
+
+def checking_the_answer_to_the_second_question_2_task(message):
+    '''проверка ответа на 2 вопрос если переменная равна 2'''
+
+    if message.text == 'КОД':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Молодец!!! Вы решили правильно!!!\nМожете выполнить задание ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        bot.send_message(message.chat.id, 'Очень жалко 😢 Вы ответили неправильно 😭')
+        msg = bot.send_message(message.chat.id, 'Вы не смогли решить задачу не хотите посмотреть выдеоролик?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_2_question_2_task)
+
+def do_something_after_wrong_answer_but_2_question_2_task(message):
+    '''что делаем после не правильного ответа на 2 вопрос если переменная равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Проанализируем каждый вариант ответа:\n1) «100101000» может означать как «ДКС» так и «НААС».\n2) «101111100» может означать только «КОД».\n3) «100111101» может означать как «ДОК» так и «НАОА».', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, лови ролик https://tinyurl.com/yd2s8mw5')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Плохо, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'Желаю удачи')
+        with open('Задание 2 пер 2.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Валя шифрует русские слова (последовательности букв), записывая вместо каждой буквы её код: Некоторые цепочки можно расшифровать не одним способом. Например, 00010101 может означать не только СКА, но и СНК. Даны три кодовые цепочки:\n100101000\v101111100\n100111101\nНайдите среди них ту, которая имеет только одну расшифровку, и запишите в ответе расшифрованное слово.')
+        bot.register_next_step_handler(msg, checking_the_answer_to_the_second_question_3_task)
+
+def checking_the_answer_to_the_second_question_3_task(message):
+    '''проверка ответа на 2 вопрос если переменная равна 3'''
+
+    if message.text == 'СОДА':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Молодец!!! Вы решили правильно!!!\nМожете выполнить задание ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text='Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        bot.send_message(message.chat.id, 'Очень жалко 😢 Вы ответили неправильно 😭')
+        msg = bot.send_message(message.chat.id, 'Вы не смогли решить задачу не хотите посмотреть выдеоролик?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_2_question_3_task)
+
+def do_something_after_wrong_answer_but_2_question_3_task(message):
+    '''что делаем после не правильного ответа на 2 вопрос если переменная равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Проанализируем каждый вариант ответа:\n1) «1010110» может означать как «НКН» так и «КАН».\n2) «11110001» может означать только «ОДА».\n3) «100000101» может означать как «ДСК» так и «НСАА».', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, лови ролик https://tinyurl.com/yd2s8mw5')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выполнить что-то из предложенного ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Плохо, лучше посмотреть, но если не хочешь можешь что-то выбрать ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'Желаю удачи')
+        with open('Задание 2 пер 3.jpg', 'rb') as file:
+            bot.send_photo(message.chat.id, file)
+        msg = bot.send_message(message.chat.id, 'Валя шифрует русские слова (последовательности букв), записывая вместо каждой буквы её код: Некоторые цепочки можно расшифровать не одним способом. Например, 00010101 может означать не только СКА, но и СНК. Даны три кодовые цепочки: 1010110\n100000101\n00011110001\nНайдите среди них ту, которая имеет только одну расшифровку, и запишите в ответе расшифрованное слово.')
+        bot.register_next_step_handler(msg, checking_the_answer_to_the_second_question_3_task)
+
+
+def checking_for_the_answer_from_the_first_question_1_task(message):
+    '''проверка ответа на 1 вопрос если переменная равна 1'''
+
+    if message.text == 'скользя':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Молодец!!! Вы ответили правильно!!! Можете выбрать выполняемое задание ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text = 'Посмотреть решение')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        bot.send_message(message.chat.id, 'Очень жаль 😢 Вы ответили неправильно 😭')
+        msg = bot.send_message(message.chat.id, 'Вы не смогли решить задачу не хотите посмотреть выдеоролик?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_1_question_1_tesk)
+
+def do_something_after_wrong_answer_but_1_question_1_tesk(message):
+    '''смотрим или нет ролик после неудачного ответа на 1 задание'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Поскольку один символ кодируется 8 битами или одним байтом, текст оказался на 8 символов больше нужного предложения. Заметим, что пробел занимает один байт. Значит, лишнее слово должно состоять из семи букв, поскольку (8 − 1) : 1 = 7 символов. Из всего текста только одно слово состоит из 7 букв — «скользя».', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, держи ролик  https://tinyurl.com/yaalkboe')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После просмотра ролика можешь выбрать что-то', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жалко, тогда можешь выполнить что-то другое', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'На этот раз желаю удачи 😇, можете порешать еще несколко раз')
+        msg = bot.send_message(message.chat.id, 'Одно из слов ученик написал два раза подряд, поставив между одинаковыми словами один пробел. При этом размер написанного предложения в данной кодировке оказался на 8 байт больше, чем размер нужного предложения. Напишите в ответе лишнее слово.')
+        bot.register_next_step_handler(msg, checking_for_the_answer_from_the_first_question_1_task)
+
+def checking_for_the_answer_from_the_first_question_2_task(message):
+    '''проверка ответа на 1 вопрос если переменная равна 2'''
+
+    if message.text == 'тюлень':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Молодец!!! Вы ответили правильно!!! Можете выбрать выполняемое задание ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text = 'Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        bot.send_message(message.chat.id, 'Очень жалко 😢 Вы ответили неправильно 😭')
+        msg = bot.send_message(message.chat.id, 'Вы не смогли решить задачу не хотите посмотреть выдеоролик?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_1_question_2_task)
+
+def do_something_after_wrong_answer_but_1_question_2_task(message):
+    '''смотрим или нет ролик после неудачного ответа на 1 задание если переменная равна 2'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Поскольку один символ кодируется 8 битами или одним байтом, текст оказался на 8 символов больше нужного предложения. Заметим, что пробел занимает один байт. Значит, лишнее слово должно состоять из семи букв, поскольку (8 − 1) : 1 = 7 символов. Из всего текста только одно слово состоит из 7 букв — «скользя».', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, держи ролик  https://tinyurl.com/yaalkboe')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Как поглядишь на ролик, можешь выбрать что-то из пердложенного ниже', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жалко, тогда можешь выполнить что-то другое', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'На этот раз желаю удачи 😇, можете порешать еще раз')
+        msg = bot.send_message(message.chat.id, '  Одно из слов ученик написал два раза подряд, поставив между одинаковыми словами один пробел. При этом размер написанного предложения в данной кодировке оказался на 8 байт больше, чем размер нужного предложения. Напишите в ответе лишнее слово.')
+        bot.register_next_step_handler(msg, checking_for_the_answer_from_the_first_question_2_task)
+
+def checking_for_the_answer_from_the_first_question_3_task(message):
+    '''проверка ответа на 1 вопрос если переменная равна 3'''
+
+    if message.text == 'лиственница':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id,'Молодец!!! Вы ответили правильно!!! Можете выбрать выполняемое задание ниже',reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    else:
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        item_want = types.InlineKeyboardButton(text='Хочу')
+        item_view_the_solution = types.InlineKeyboardButton(text = 'Посмотреть решение')
+        item_not_want = types.InlineKeyboardButton(text='Не хочу')
+        item_solve_the_problem = types.InlineKeyboardButton(text='Решить сначала')
+        markup.add(item_want, item_not_want, item_solve_the_problem, item_view_the_solution)
+
+        bot.send_message(message.chat.id, 'Очень жаль 😢 Вы ответили неправильно 😭 В следующий раз желаю решить лучше')
+        msg = bot.send_message(message.chat.id, 'Вы не смогли решить задачу не хотите посмотреть выдеоролик?',reply_markup=markup)
+        bot.register_next_step_handler(msg, do_something_after_wrong_answer_but_1_question_3_task)
+
+def do_something_after_wrong_answer_but_1_question_3_task(message):
+    '''смотрим или нет ролик после неудачного ответа на 1 задание если переменная равна 3'''
+
+    if message.text == 'Посмотреть решение':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Поскольку один символ кодируется двумя байтами, из текста удалили 13 символов. Заметим, что лишние запятая и пробел занимают четыре байта. Значит, название растения, которое удалили из списка, должно состоять из 11 букв, поскольку (26 − 4) : 2 = 11 символов. Из всего списка только одно название растения состоит из 11 букв — лиственница.', reply_markup = markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Хочу':
+
+        bot.send_message(message.chat.id, 'Круто, держи ролик  https://tinyurl.com/yaalkboe')
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'После ролика выбирай что будешь делать дальше', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Не хочу':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_a_specific_task = types.InlineKeyboardButton(text='Решить задачу')
+        item_solve_the_demo_test = types.InlineKeyboardButton(text='Решить ДЕМО тест')
+        item_start_training = types.InlineKeyboardButton(text='Начать обучение')
+        markup.add(item_solve_a_specific_task, item_solve_the_demo_test, item_start_training)
+
+        msg = bot.send_message(message.chat.id, 'Жаль в этот раз не получилось, тогда можешь выполнить что-то из предложенного ниже', reply_markup=markup)
+        bot.register_next_step_handler(msg, gl_buttons_after_an_incorrect_answer_to_a_question)
+
+    if message.text == 'Решить сначала':
+
+        bot.send_message(message.chat.id, 'На этот раз желаю удачи 😇, можете порешать еще раз')
+        msg = bot.send_message(message.chat.id, 'Одно из слов ученик написал два раза подряд, поставив между одинаковыми словами один пробел. При этом размер написанного предложения в данной кодировке оказался на 8 байт больше, чем размер нужного предложения. Напишите в ответе лишнее слово.')
+        bot.register_next_step_handler(msg, checking_for_the_answer_from_the_first_question_3_task)
+
+def gl_buttons_after_an_incorrect_answer_to_a_question(message):
+    """проверка того что делать после того как пользователь посмотрел ролик или нажал не хочу смотреть."""
+
+    if message.text == 'Решить задачу':
+
+        global gl_variable
+        gl_variable += 1
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=3)
+        item_1 = types.InlineKeyboardButton(text = 'Номер 1')
+        item_2 = types.InlineKeyboardButton(text = 'Номер 2')
+        item_3 = types.InlineKeyboardButton(text = 'Номер 3')
+        item_4 = types.InlineKeyboardButton(text = 'Номер 4')
+        item_5 = types.InlineKeyboardButton(text = 'Номер 5')
+        item_6 = types.InlineKeyboardButton(text = 'Номер 6')
+        item_7 = types.InlineKeyboardButton(text = 'Номер 7')
+        item_8 = types.InlineKeyboardButton(text = 'Номер 8')
+        item_9 = types.InlineKeyboardButton(text = 'Номер 9')
+        item_10 = types.InlineKeyboardButton(text = 'Номер 10')
+        markup.add(item_1, item_2, item_3, item_4, item_5, item_6, item_7, item_8, item_9, item_10)
+
+        msg = bot.send_message(message.chat.id, 'Выберете номер выполняемого задания', reply_markup=markup)
+        bot.register_next_step_handler(msg, checking_the_task_number)
+
+    if message.text == 'Решить ДЕМО тест':
+
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
+        item_solve_DEMO_test_here = types.InlineKeyboardButton(text='Решить ДЕМО тест здесь')
+        item_solve_the_DEMO_test_on_the_website = types.InlineKeyboardButton(text='Решить ДЕМО тест на сайте')
+        markup.add(item_solve_DEMO_test_here, item_solve_the_DEMO_test_on_the_website)
+
+        msg = bot.send_message(message.chat.id, 'Вы как хотите пройти демо тест?', reply_markup=markup)
+        bot.register_next_step_handler(msg, DEMO_test_check)
+
+bot.polling()
